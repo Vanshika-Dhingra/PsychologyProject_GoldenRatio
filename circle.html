@@ -17,33 +17,32 @@
 <body>
   <button id="convertButton">Convert to Images</button>
   <div class="canvas-container">
-	  <canvas id="circleCanvas" width="200" height="200"></canvas>
+	  <canvas id="1" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="parallelogramCanvas" width="400" height="200"></canvas>
+	  <canvas id="1.268" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="trapeziumCanvas" width="400" height="200"></canvas>
+	  <canvas id="1.618" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="rectangleCanvas" width="400" height="200"></canvas>
+	  <canvas id="2.098" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="squareCanvas" width="210" height="210"></canvas>
+	  <canvas id="2.791" width="200" height="200"></canvas>
   </div>
-
   <div class="canvas-container">
-    <canvas id="ellipseCanvas" width="400" height="200"></canvas>
+	  <canvas id="3.885" width="200" height="200"></canvas>
   </div>
 
   <script>
     const canvasIds = [
-      "circleCanvas",
-      "parallelogramCanvas",
-      "trapeziumCanvas",
-      "rectangleCanvas",
-      "squareCanvas",
-      "ellipseCanvas"
+      "1",
+      "1.268",
+      "1.618",
+      "2.098",
+      "2.791",
+      "3.885"
     ];
 
     // Function to draw the shapes with lines on the canvas
@@ -95,13 +94,10 @@
     else{
       ctx.strokeStyle = shape.lineColor;
       ctx.lineWidth = 1;
-      // ctx.beginPath();
-      // ctx.moveTo(0, canvas.height / 2);
-      // ctx.lineTo(canvas.width, canvas.height / 2);
       // ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(canvas.width / 1.618, 0);
-      ctx.lineTo(canvas.width / 1.618, canvas.height);
+      ctx.moveTo(canvas.width-canvas.width / (parseFloat(canvasId)+1) , 0);
+      ctx.lineTo(canvas.width-canvas.width / (parseFloat(canvasId) +1), canvas.height);
       ctx.stroke();
       }
     }
@@ -113,30 +109,30 @@
         lineColor: "#ffffff"
       },
       {
-        type: "parallelogram",
-        backgroundColor: "rgb(9, 189, 212)",
+        type: "circle",
+        backgroundColor: "#3498db",
         lineColor: "#ffffff"
       },
       {
-        type: "trapezium",
-        backgroundColor: "rgb(9, 189, 212)",
+        type: "circle",
+        backgroundColor: "#3498db",
         lineColor: "#ffffff"
       },
       {
-        type: "rectangle",
-        backgroundColor: "#f1c40f",
+        type: "circle",
+        backgroundColor: "#3498db",
         lineColor: "#ffffff"
       },
       {
-        type: "square",
-        backgroundColor: "#9b59b6",
+        type: "circle",
+        backgroundColor: "#3498db",
         lineColor: "#ffffff"
       },
       {
-        type: "ellipse",
-        backgroundColor: "#e67e22",
+        type: "circle",
+        backgroundColor: "#3498db",
         lineColor: "#ffffff"
-      }
+      },
     ];
 
     // Draw shapes with lines on the canvases
