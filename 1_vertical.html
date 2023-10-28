@@ -4,9 +4,8 @@
   <style>
     .shape {
       position: relative;
-      background-color: #3498db; /* Blue color */
       display: inline-block;
-      margin: 100px;
+      margin: 20px;
     }
 
     .shape::before,
@@ -17,89 +16,59 @@
     }
 
     .circle {
-      width: 5.86cm;
-      height: 5.86cm;
+      width: 200px;
+      height: 200px;
       border-radius: 50%; /* Makes it a circle */
+      background-color: #3498db; /* Blue color */
     }
 
     .parallelogram {
-      width: 9cm;
-      height: 3cm;
-      transform: skew(140deg);
+      width: 300px;
+      height: 100px;
+      transform: skew(20deg);
       background: rgb(9, 189, 212);
     }
 
-
-
     .rectangle {
-      width: 9cm;
-      height: 3cm;
+      width: 300px;
+      height: 100px;
       background-color: #f1c40f; /* Yellow color */
     }
 
     .square {
-      width: 5.196cm;
-      height: 5.196cm;
+      width: 210px;
+      height: 210px;
       background-color: #9b59b6; /* Purple color */
     }
 
     .ellipse {
-      width: 8.6cm;
-      height: 4cm;
+      width: 200px;
+      height: 100px;
       background-color: #e67e22; /* Orange color */
       border-radius: 50%; /* Makes it an ellipse */
     }
 
+    .trapezium {
+      width: 300px;
+      height: 100px;
+      background: rgb(9, 189, 212);
+    }
+
     /* Add lines for each shape */
     .circle::before,
-    .circle::after {
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-    }
-
+    .circle::after,
     .parallelogram::before,
-    .parallelogram::after {
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-    }
-
-    .trapezium {
-      width: 9cm;
-      height: 3cm;
-      border: 1px solid black;
-      clip-path: polygon(0 0, 100% 0, 75% 100%, 25% 100%);
-      transform: rotate(180deg);
-    }
+    .parallelogram::after,
+    .trapezium::before,
+    .trapezium::after,
+    .rectangle::before,
+    .rectangle::after,
+    .square::before,
+    .square::after,
+    .ellipse::before,
+    .ellipse::after,
     .trapezium::before,
     .trapezium::after {
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-    }
-
-    .rectangle::before,
-    .rectangle::after {
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-    }
-
-    .square::before,
-    .square::after {
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-    }
-
-    .ellipse::before,
-    .ellipse::after {
       top: 0;
       bottom: 0;
       left: 50%;
@@ -108,11 +77,74 @@
   </style>
 </head>
 <body>
-  <div class="shape circle"></div>
-  <div class="shape parallelogram"></div>
-  <div class="shape trapezium"></div>
-  <div class="shape rectangle"></div>
-  <div class="shape square"></div>
-  <div class="shape ellipse"></div>
+  <div class="shape circle" id="circleCanvas"></div>
+  <div class="shape parallelogram" id="parallelogramCanvas"></div>
+  <div class="shape trapezium" id="trapeziumCanvas"></div>
+  <div class="shape rectangle" id="rectangleCanvas"></div>
+  <div class="shape square" id="squareCanvas"></div>
+  <div class="shape ellipse" id="ellipseCanvas"></div>
+
+  <button id="convertButton">Convert to Images</button>
+
+  <script src="https://unpkg.com/html-to-image@1.10.1/dist/html-to-image.min.js"></script>
+  <script>
+    const shapes = document.querySelectorAll('.shape');
+
+    shapes.forEach((shape, index) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = shape.clientWidth;
+      canvas.height = shape.clientHeight;
+      const ctx = canvas.getContext('2d');
+      const backgroundColor = getComputedStyle(shape).backgroundColor;
+      const lineColor = getComputedStyle(shape).borderColor || getComputedStyle(shape).color;
+
+      ctx.fillStyle = backgroundColor;
+
+      if (shape.classList.contains('circle')) {
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, 2 * Math.PI);
+        ctx.fill();
+      } else if (shape.classList.contains('parallelogram')) {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(canvas.width, 0);
+        ctx.lineTo(0.75 * canvas.width, canvas.height);
+        ctx.lineTo(0.25 * canvas.width, canvas.height);
+        ctx.closePath();
+        ctx.fill();
+      } else if (shape.classList.contains('rectangle')) {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (shape.classList.contains('square')) {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (shape.classList.contains('ellipse')) {
+        ctx.beginPath();
+        ctx.ellipse(canvas.width / 2, canvas.height / 2, canvas.width / 2, canvas.height / 4, 0, 0, 2 * Math.PI);
+        ctx.fill();
+      } else if (shape.classList.contains('trapezium')) {
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0.75 * canvas.width, 0);
+        ctx.lineTo(0.25 * canvas.width, 0);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      shape.appendChild(canvas);
+    });
+
+    const canvasIds = ['circleCanvas', 'parallelogramCanvas', 'trapeziumCanvas', 'rectangleCanvas', 'squareCanvas', 'ellipseCanvas'];
+
+    document.getElementById('convertButton').addEventListener('click', () => {
+      canvasIds.forEach((canvasId, index) => {
+        const canvas = document.getElementById(canvasId);
+        const dataUrl = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = dataUrl;
+        downloadLink.download = `shape${index}.png`;
+        downloadLink.click();
+      });
+    });
+  </script>
 </body>
 </html>

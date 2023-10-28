@@ -2,116 +2,136 @@
 <html>
 <head>
   <style>
-    .shape {
-      position: relative;
-      background-color: #3498db; /* Blue color */
-      display: inline-block;
-      margin: 100px;
+    .canvas-container {
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
     }
 
-    .shape::before,
-    .shape::after {
-      content: "";
-      position: absolute;
-      background-color: #ffffff; /* White color for the lines */
-    }
-
-    .circle {
-      width: 5.86cm;
-      height: 5.86cm;
-      border-radius: 50%; /* Makes it a circle */
-    }
-
-    .parallelogram {
-      width: 9cm;
-      height: 3cm;
-      transform: skew(140deg);
-      background: rgb(9, 189, 212);
-    }
-
-    .trapezium {
-      width: 9cm;
-      height: 3cm;
-      border: 1px solid black;
-      clip-path: polygon(0 0, 100% 0, 75% 100%, 25% 100%);
-      transform: rotate(180deg);
-    }
-
-    .rectangle {
-      width: 9cm;
-      height: 3cm;
-      background-color: #f1c40f; /* Yellow color */
-    }
-
-    .square {
-      width: 5.196cm;
-      height: 5.196cm;
-      background-color: #9b59b6; /* Purple color */
-    }
-
-    .ellipse {
-      width: 8.6cm;
-      height: 4cm;
-      background-color: #e67e22; /* Orange color */
-      border-radius: 50%; /* Makes it an ellipse */
-    }
-
-    /* Add horizontal lines for each shape */
-    .circle::before,
-    .circle::after {
-      top: 50%;
-      height: 1px;
-      left: 0;
-      right: 0;
-    }
-
-    .parallelogram::before,
-    .parallelogram::after {
-      top: 50%;
-      height: 1px;
-      left: 0;
-      right: 0;
-    }
-
-    .trapezium::before,
-    .trapezium::after {
-      top: 50%;
-      height: 1px;
-      left: 0;
-      right: 0;
-    }
-
-    .rectangle::before,
-    .rectangle::after {
-      top: 50%;
-      height: 1px;
-      left: 0;
-      right: 0;
-    }
-
-    .square::before,
-    .square::after {
-      top: 50%;
-      height: 1px;
-      left: 0;
-      right: 0;
-    }
-
-    .ellipse::before,
-    .ellipse::after {
-      top: 50%;
-      height: 1px;
-      left: 0;
-      right: 0;
+    canvas {
+      margin: 10px;
+      border: 1px solid #000;
     }
   </style>
 </head>
 <body>
-  <div class="shape circle"></div>
-  <div class="shape parallelogram"></div>
-  <div class="shape trapezium"></div>
-  <div class="shape rectangle"></div>
-  <div class="shape square"></div>
-  <div class="shape ellipse"></div>
+  <button id="convertButton">Convert to Images</button>
+  <div class="canvas-container">
+    <canvas id="circleCanvas" width="200" height="200"></canvas>
+    <canvas id="parallelogramCanvas" width="300" height="100"></canvas>
+    <canvas id="trapeziumCanvas" width="300" height="100"></canvas>
+    <canvas id="rectangleCanvas" width="300" height="100"></canvas>
+    <canvas id="squareCanvas" width="210" height="210"></canvas>
+    <canvas id="ellipseCanvas" width="200" height="100"></canvas>
+  </div>
+
+  <script>
+    const canvasIds = [
+      "circleCanvas",
+      "parallelogramCanvas",
+      "trapeziumCanvas",
+      "rectangleCanvas",
+      "squareCanvas",
+      "ellipseCanvas"
+    ];
+
+    // Function to draw the shapes with lines on the canvas
+    function drawShapeWithLines(canvasId, shape) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillStyle = shape.backgroundColor;
+
+      if (shape.type === "circle") {
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, 2 * Math.PI);
+        ctx.fill();
+      } else if (shape.type === "parallelogram") {
+        ctx.beginPath();
+        ctx.moveTo(0.25*canvas.width, 0);
+        ctx.lineTo(canvas.width, 0);
+        ctx.lineTo(0.75 * canvas.width, canvas.height);
+        ctx.lineTo(0 * canvas.width, canvas.height);
+        ctx.closePath();
+        ctx.fill();
+      } else if (shape.type === "trapezium") {
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0.75 * canvas.width, 0);
+        ctx.lineTo(0.25 * canvas.width, 0);
+        ctx.closePath();
+        ctx.fill();
+      } else if (shape.type === "rectangle" || shape.type === "square") {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (shape.type === "ellipse") {
+        ctx.beginPath();
+        ctx.ellipse(canvas.width / 2, canvas.height / 2, canvas.width / 2, canvas.height / 4, 0, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      // Draw lines
+      ctx.strokeStyle = shape.lineColor;
+      ctx.lineWidth = 1;
+      // ctx.beginPath();
+      // ctx.moveTo(0, canvas.height / 2);
+      // ctx.lineTo(canvas.width, canvas.height / 2);
+      // ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+    }
+
+    const shapes = [
+      {
+        type: "circle",
+        backgroundColor: "#3498db",
+        lineColor: "#ffffff"
+      },
+      {
+        type: "parallelogram",
+        backgroundColor: "rgb(9, 189, 212)",
+        lineColor: "#ffffff"
+      },
+      {
+        type: "trapezium",
+        backgroundColor: "rgb(9, 189, 212)",
+        lineColor: "#ffffff"
+      },
+      {
+        type: "rectangle",
+        backgroundColor: "#f1c40f",
+        lineColor: "#ffffff"
+      },
+      {
+        type: "square",
+        backgroundColor: "#9b59b6",
+        lineColor: "#ffffff"
+      },
+      {
+        type: "ellipse",
+        backgroundColor: "#e67e22",
+        lineColor: "#ffffff"
+      }
+    ];
+
+    // Draw shapes with lines on the canvases
+    for (let i = 0; i < shapes.length; i++) {
+      drawShapeWithLines(canvasIds[i], shapes[i]);
+    }
+
+    // Add an event listener to the button
+    document.getElementById("convertButton").addEventListener("click", function () {
+      canvasIds.forEach(function (canvasId, index) {
+        const canvas = document.getElementById(canvasId);
+        const dataUrl = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl;
+        downloadLink.download = `shape${index}.png`;
+        downloadLink.click();
+      });
+    });
+  </script>
 </body>
 </html>
