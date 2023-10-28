@@ -60,10 +60,17 @@
         lineColor: "#ffffff"
       };
 
-      // Draw shapes with the user-defined shape
+      // Adjust canvas width based on the shape
       for (let i = 0; i < canvasIds.length; i++) {
         const x = i * 220; // Adjust the gap size here
         const y = 0;
+        if (shapeName === "ellipse" || shapeName === "rectangle") {
+          // Set canvas width to 300 for ellipse and rectangle
+          document.getElementById(canvasIds[i]).width = 300;
+        } else {
+          // Reset canvas width to 200 for other shapes
+          document.getElementById(canvasIds[i]).width = 200;
+        }
         drawShapeWithLines(canvasIds[i], userShape, x, y);
       }
     }
@@ -81,7 +88,7 @@
     function drawShapeWithLines(canvasId, shape, x, y) {
       const canvas = document.getElementById(canvasId);
       const ctx = canvas.getContext("2d");
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = shape.backgroundColor;
 
       if (shape.type === "circle") {
@@ -93,7 +100,7 @@
         ctx.moveTo(0.25 * canvas.width, 0);
         ctx.lineTo(canvas.width, 0);
         ctx.lineTo(0.75 * canvas.width, canvas.height);
-        ctx.lineTo(0 * canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
         ctx.closePath();
         ctx.fill();
       } else if (shape.type === "trapezium") {
