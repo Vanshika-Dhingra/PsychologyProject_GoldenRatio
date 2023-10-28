@@ -17,6 +17,7 @@
 <body>
   <form onsubmit="reload(); return false;">
     Enter Shape name: <input type="text" id="shapeName">
+    Enter Rotation Angle (degrees): <input type="number" id="rotationAngle" value="0">
     <input type="submit" value="Reload">
   </form>
 
@@ -52,6 +53,7 @@
 
     function reload() {
       const shapeName = document.getElementById("shapeName").value;
+      const rotationAngle = parseFloat(document.getElementById("rotationAngle").value);
 
       // Create a single user-defined shape object
       const userShape = {
@@ -71,7 +73,7 @@
           // Reset canvas width to 200 for other shapes
           document.getElementById(canvasIds[i]).width = 200;
         }
-        drawShapeWithLines(canvasIds[i], userShape, x, y);
+        drawShapeWithLines(canvasIds[i], userShape, x, y, rotationAngle);
       }
     }
 
@@ -85,10 +87,14 @@
     }
 
     // Function to draw the shapes with lines on the canvas
-    function drawShapeWithLines(canvasId, shape, x, y) {
+    function drawShapeWithLines(canvasId, shape, x, y, rotationAngle) {
       const canvas = document.getElementById(canvasId);
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save(); // Save the current transformation
+      ctx.translate(canvas.width / 2, canvas.height / 2); // Translate to the center of the canvas
+      ctx.rotate((rotationAngle * Math.PI) / 180); // Rotate by the user-specified angle (in degrees)
+      ctx.translate(-canvas.width / 2, -canvas.height / 2); // Translate back to the original position
       ctx.fillStyle = shape.backgroundColor;
 
       if (shape.type === "circle") {
@@ -136,6 +142,8 @@
         ctx.lineTo(canvas.width - canvas.width / (parseFloat(canvasId) + 1), canvas.height);
         ctx.stroke();
       }
+
+      ctx.restore(); // Restore the saved transformation
     }
 
     // Add an event listener to the button
