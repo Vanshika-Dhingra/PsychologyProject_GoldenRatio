@@ -94,7 +94,7 @@
       ctx.save(); // Save the current transformation
       ctx.translate(canvas.width / 2, canvas.height / 2); // Translate to the center of the canvas
     //   ctx.scale(-1, 1);
-    ctx.scale(1, -1);
+    //ctx.scale(1, -1);
       ctx.rotate((rotationAngle * Math.PI) / 180); // Rotate by the user-specified angle (in degrees)
       ctx.translate(-canvas.width / 2, -canvas.height / 2); // Translate back to the original position
       ctx.fillStyle = shape.backgroundColor;
@@ -137,8 +137,8 @@
 		div = 0.25
 		ratio = parseFloat(canvasId)
 		extra = (1-div)*canvas.width / (1+ratio)
-        ctx.moveTo(canvas.width * div + extra, 0);
-        ctx.lineTo(extra, canvas.height);
+        ctx.moveTo(0,canvas.height/(1+ratio))//canvas.height * div - extra);
+        ctx.lineTo(canvas.width, canvas.height/(1+ratio));
         ctx.closePath();
         ctx.stroke();
       } else {
@@ -165,7 +165,7 @@
       // Append shape name and rotation angle to the image name
       const shapeName = document.getElementById("shapeName").value;
       const rotationAngle = document.getElementById("rotationAngle").value;
-      const imageName = `${shapeName}_angle_${rotationAngle}_mirrored_horizontal.png`;
+      const imageName = `${shapeName}_angle_${rotationAngle}_horizontal.png`;
 
       // Loop through each canvas and draw it on the merged canvas
       for (let i = 0; i < canvasIds.length; i++) {
