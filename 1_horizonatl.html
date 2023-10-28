@@ -71,6 +71,14 @@
       }
 
       // Draw lines
+        if (shape.type === "parallelogram") {
+    ctx.beginPath();
+    ctx.moveTo(0.5 * canvas.width*1.25, 0); // Adjust the starting point for the line
+    ctx.lineTo(0.375 * canvas.width, canvas.height); // Adjust the ending point for the line
+    ctx.closePath();
+    ctx.stroke();
+  }
+    else{
       ctx.strokeStyle = shape.lineColor;
       ctx.lineWidth = 1;
       // ctx.beginPath();
@@ -81,6 +89,7 @@
       ctx.moveTo(canvas.width / 2, 0);
       ctx.lineTo(canvas.width / 2, canvas.height);
       ctx.stroke();
+      }
     }
 
     const shapes = [
