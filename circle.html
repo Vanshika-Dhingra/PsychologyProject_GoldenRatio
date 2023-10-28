@@ -148,7 +148,6 @@
         ctx.stroke();
       }
     
-
       ctx.restore(); // Restore the saved transformation
     }
 
@@ -160,6 +159,11 @@
       const totalWidth = canvasIds.length * 220 + 20; // Adjust the gap size and margin here
       mergedCanvas.width = totalWidth;
       mergedCanvas.height = 200;
+
+      // Append shape name and rotation angle to the image name
+      const shapeName = document.getElementById("shapeName").value;
+      const rotationAngle = document.getElementById("rotationAngle").value;
+      const imageName = `${shapeName}_angle_${rotationAngle}.png`;
 
       // Loop through each canvas and draw it on the merged canvas
       for (let i = 0; i < canvasIds.length; i++) {
@@ -173,7 +177,7 @@
       const dataUrl = mergedCanvas.toDataURL("image/png");
       const downloadLink = document.createElement("a");
       downloadLink.href = dataUrl;
-      downloadLink.download = "merged_shapes.png";
+      downloadLink.download = imageName; // Set the download filename
       downloadLink.style.display = "none"; // Hide the link
       document.body.appendChild(downloadLink); // Add the link to the DOM
       downloadLink.click(); // Simulate a click on the link
