@@ -15,9 +15,14 @@
   </style>
 </head>
 <body>
+  <form onsubmit="reload(); return false;">
+    Enter Shape name: <input type="text" id="shapeName">
+    <input type="submit" value="Reload">
+  </form>
+
   <button id="convertButton">Convert to Images</button>
   <div class="canvas-container">
-    <canvas id="1" width="300" height="200"></canvas>
+    <canvas id="1" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
     <canvas id="1.268" width="200" height="200"></canvas>
@@ -45,26 +50,38 @@
       "3.885"
     ];
 
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
+    function reload() {
+      const shapeName = document.getElementById("shapeName").value;
 
+      // Create a single user-defined shape object
+      const userShape = {
+        type: shapeName,
+        backgroundColor: getRandomColor(),
+        lineColor: "#ffffff"
+      };
 
+      // Draw shapes with the user-defined shape
+      for (let i = 0; i < canvasIds.length; i++) {
+        const x = i * 220; // Adjust the gap size here
+        const y = 0;
+        drawShapeWithLines(canvasIds[i], userShape, x, y);
+      }
+    }
 
-function setRandomColor() {
-  $("#colorpad").css("background-color", getRandomColor());
-}
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
 
     // Function to draw the shapes with lines on the canvas
     function drawShapeWithLines(canvasId, shape, x, y) {
       const canvas = document.getElementById(canvasId);
       const ctx = canvas.getContext("2d");
-
+      ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.fillStyle = shape.backgroundColor;
 
       if (shape.type === "circle") {
@@ -114,62 +131,17 @@ function setRandomColor() {
       }
     }
 
-    let shapes = [
-      {
-        type: "circle",
-        backgroundColor: "#3498db",
-        lineColor: "#ffffff"
-      },
-      {
-        type: "circle",
-        backgroundColor: "#3498db",
-        lineColor: "#ffffff"
-      },
-      {
-        type: "circle",
-        backgroundColor: "#3498db",
-        lineColor: "#ffffff"
-      },
-      {
-        type: "circle",
-        backgroundColor: "#3498db",
-        lineColor: "#ffffff"
-      },
-      {
-        type: "circle",
-        backgroundColor: "#3498db",
-        lineColor: "#ffffff"
-      },
-      {
-        type: "circle",
-        backgroundColor: "#3498db",
-        lineColor: "#ffffff"
-      },
-    ];
-	col = getRandomColor()
-	for (let i = 0; i < shapes.length; i++) {
-		shapes[i].type = "rectangle"
-		shapes[i].backgroundColor = col
-	} 
-
-    // Draw shapes with lines on the canvases
-    for (let i = 0; i < shapes.length; i++) {
-      const x = i * 220; // Adjust the gap size here
-      const y = 0;
-      drawShapeWithLines(canvasIds[i], shapes[i], x, y);
-    }
-
     // Add an event listener to the button
     document.getElementById("convertButton").addEventListener("click", function () {
       // Create a new canvas to merge all canvases
       const mergedCanvas = document.createElement('canvas');
       const context = mergedCanvas.getContext('2d');
-      const totalWidth = shapes.length * 220 + 20; // Adjust the gap size and margin here
+      const totalWidth = canvasIds.length * 220 + 20; // Adjust the gap size and margin here
       mergedCanvas.width = totalWidth;
       mergedCanvas.height = 200;
 
       // Loop through each canvas and draw it on the merged canvas
-      for (let i = 0; i < shapes.length; i++) {
+      for (let i = 0; i < canvasIds.length; i++) {
         const canvas = document.getElementById(canvasIds[i]);
         const x = i * 220 + 10; // Adjust the gap size and margin here
         const y = 0;
@@ -181,7 +153,10 @@ function setRandomColor() {
       const downloadLink = document.createElement("a");
       downloadLink.href = dataUrl;
       downloadLink.download = "merged_shapes.png";
-      downloadLink.click();
+      downloadLink.style.display = "none"; // Hide the link
+      document.body.appendChild(downloadLink); // Add the link to the DOM
+      downloadLink.click(); // Simulate a click on the link
+      document.body.removeChild(downloadLink); // Remove the link from the DOM
     });
   </script>
 </body>
