@@ -17,7 +17,7 @@
 <body>
   <button id="convertButton">Convert to Images</button>
   <div class="canvas-container">
-    <canvas id="1" width="200" height="200"></canvas>
+    <canvas id="1" width="300" height="200"></canvas>
   </div>
   <div class="canvas-container">
     <canvas id="1.268" width="200" height="200"></canvas>
@@ -44,6 +44,21 @@
       "2.791",
       "3.885"
     ];
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+
+
+function setRandomColor() {
+  $("#colorpad").css("background-color", getRandomColor());
+}
 
     // Function to draw the shapes with lines on the canvas
     function drawShapeWithLines(canvasId, shape, x, y) {
@@ -99,7 +114,7 @@
       }
     }
 
-    const shapes = [
+    let shapes = [
       {
         type: "circle",
         backgroundColor: "#3498db",
@@ -131,6 +146,11 @@
         lineColor: "#ffffff"
       },
     ];
+	col = getRandomColor()
+	for (let i = 0; i < shapes.length; i++) {
+		shapes[i].type = "rectangle"
+		shapes[i].backgroundColor = col
+	} 
 
     // Draw shapes with lines on the canvases
     for (let i = 0; i < shapes.length; i++) {
