@@ -46,6 +46,3 @@ plt.xlabel('Figure Number')
 plt.ylabel('Count')
 plt.title('Count of Figure Number')
 plt.show()
-
-
-
