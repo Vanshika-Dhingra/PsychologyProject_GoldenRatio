@@ -27,7 +27,7 @@ def calculate_black_to_white_ratio(image_path):
         if white_pixels == 0:
             ratio = 0  # To avoid division by zero
         else:
-            ratio = black_pixels / white_pixels
+            ratio = max(black_pixels / white_pixels, white_pixels / black_pixels)
 
         return black_pixels, white_pixels, ratio
 
