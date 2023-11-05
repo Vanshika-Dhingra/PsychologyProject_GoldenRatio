@@ -22,22 +22,22 @@
 
   <button id="convertButton">Convert to Images</button>
   <div class="canvas-container">
-    <canvas id="circle" width="600" height="600"></canvas>
+    <canvas id="circle" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="parallelogram" width="600" height="600"></canvas>
+    <canvas id="parallelogram" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="trapezium" width="600" height="600"></canvas>
+    <canvas id="trapezium" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="rectangle" width="600" height="900"></canvas>
+    <canvas id="rectangle" width="200" height="300"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="square" width="600" height="600"></canvas>
+    <canvas id="square" width="200" height="200"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="ellipse" width="600" height="900"></canvas>
+    <canvas id="ellipse" width="300" height="200"></canvas>
   </div>
 
   <script>
@@ -54,45 +54,48 @@
     }
 
     // Function to draw the shapes with lines on the canvas
-    function drawShapeWithLines(shape, x, y, rotationAngle) {
-      const canvas = document.getElementById(shape);
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save(); // Save the current transformation
-      ctx.translate(canvas.width / 2, canvas.height / 2); // Translate to the center of the canvas
-      ctx.rotate((rotationAngle * Math.PI) / 180); // Rotate by the user-specified angle (in degrees)
-      ctx.translate(-canvas.width / 2, -canvas.height / 2); // Translate back to the original position
-      ctx.fillStyle = getRandomColor();
+    // Function to draw the shapes with lines on the canvas
+function drawShapeWithLines(shape, x, y, rotationAngle) {
+  const canvas = document.getElementById(shape);
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save(); // Save the current transformation
+  ctx.translate(canvas.width / 2, canvas.height / 2); // Translate to the center of the canvas
+  ctx.rotate((rotationAngle * Math.PI) / 180); // Rotate by the user-specified angle (in degrees)
+  ctx.fillStyle = getRandomColor();
 
-      if (shape === "circle") {
-        ctx.beginPath();
-        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, 2 * Math.PI);
-        ctx.fill();
-      } else if (shape === "parallelogram") {
-        ctx.beginPath();
-        ctx.moveTo(0.25 * canvas.width, 0);
-        ctx.lineTo(canvas.width, 0);
-        ctx.lineTo(0.75 * canvas.width, canvas.height);
-        ctx.lineTo(0, canvas.height);
-        ctx.closePath();
-        ctx.fill();
-      } else if (shape === "trapezium") {
-        ctx.beginPath();
-        ctx.moveTo(0, canvas.height);
-        ctx.lineTo(canvas.width, canvas.height);
-        ctx.lineTo(0.75 * canvas.width, 0);
-        ctx.lineTo(0.25 * canvas.width, 0);
-        ctx.closePath();
-        ctx.fill();
-      } else if (shape === "rectangle" || shape === "square") {
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      } else if (shape === "ellipse") {
-        ctx.beginPath();
-        ctx.ellipse(canvas.width / 2, canvas.height / 2, canvas.width / 2, canvas.height / 2, 0, 0, 2 * Math.PI);
-        ctx.fill();
-      }
-      ctx.restore(); // Restore the saved transformation
-    }
+  if (shape === "circle") {
+    ctx.beginPath();
+    ctx.arc(0, 0, canvas.width / 2, 0, 2 * Math.PI);
+    ctx.fill();
+  } else if (shape === "parallelogram") {
+    ctx.beginPath();
+    ctx.moveTo(-0.25 * canvas.width, -0.5 * canvas.height);
+    ctx.lineTo(0.75 * canvas.width, -0.5 * canvas.height);
+    ctx.lineTo(0.25 * canvas.width, 0.5 * canvas.height);
+    ctx.lineTo(-0.75 * canvas.width, 0.5 * canvas.height);
+    ctx.closePath();
+    ctx.fill();
+  } else if (shape === "trapezium") {
+    ctx.beginPath();
+    ctx.moveTo(-0.5 * canvas.width, 0.5 * canvas.height);
+    ctx.lineTo(0.5 * canvas.width, 0.5 * canvas.height);
+    ctx.lineTo(0.25 * canvas.width, -0.5 * canvas.height);
+    ctx.lineTo(-0.25 * canvas.width, -0.5 * canvas.height);
+    ctx.closePath();
+    ctx.fill();
+  } else if (shape === "rectangle" || shape === "square") {
+    const width = 0.9 * canvas.width;
+    const height = 0.9 * canvas.height;
+    ctx.fillRect(-width / 2, -height / 2, width, height);
+  } else if (shape === "ellipse") {
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 0.5 * canvas.width, 0.5 * canvas.height, 0, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+  ctx.restore(); // Restore the saved transformation
+}
+
 
     function getRandomColor() {
       var letters = '0123456789ABCDEF';
