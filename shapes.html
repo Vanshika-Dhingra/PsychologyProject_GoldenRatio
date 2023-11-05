@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .canvas-container {
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    canvas {
+      margin: 10px;
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <form onsubmit="reload(); return false;">
+    Enter Rotation Angle (degrees): <input type="number" id="rotationAngle" value="0">
+    <input type="submit" value="Reload">
+  </form>
+
+  <button id="convertButton">Convert to Images</button>
+  <div class="canvas-container">
+    <canvas id="circle" width="200" height="200"></canvas>
+  </div>
+  <div class="canvas-container">
+    <canvas id="parallelogram" width="200" height="200"></canvas>
+  </div>
+  <div class="canvas-container">
+    <canvas id="trapezium" width="200" height="200"></canvas>
+  </div>
+  <div class="canvas-container">
+    <canvas id="rectangle" width="300" height="200"></canvas>
+  </div>
+  <div class="canvas-container">
+    <canvas id="square" width="200" height="200"></canvas>
+  </div>
+  <div class="canvas-container">
+    <canvas id="ellipse" width="300" height="200"></canvas>
+  </div>
+
+  <script>
+    const shapes = ['circle', 'parallelogram', 'trapezium', 'rectangle', 'square', 'ellipse'];
+
+    function reload() {
+      const rotationAngle = parseFloat(document.getElementById("rotationAngle").value);
+
+      for (const shape of shapes) {
+        const x = shapes.indexOf(shape) * 220; // Adjust the gap size here
+        const y = 0;
+        drawShapeWithLines(shape, x, y, rotationAngle);
+      }
+    }
+
+    // Function to draw the shapes with lines on the canvas
+    function drawShapeWithLines(shape, x, y, rotationAngle) {
+      const canvas = document.getElementById(shape);
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save(); // Save the current transformation
+      ctx.translate(canvas.width / 2, canvas.height / 2); // Translate to the center of the canvas
+      ctx.rotate((rotationAngle * Math.PI) / 180); // Rotate by the user-specified angle (in degrees)
+      ctx.translate(-canvas.width / 2, -canvas.height / 2); // Translate back to the original position
+      ctx.fillStyle = getRandomColor();
+
+      if (shape === "circle") {
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, 2 * Math.PI);
+        ctx.fill();
+      } else if (shape === "parallelogram") {
+        ctx.beginPath();
+        ctx.moveTo(0.25 * canvas.width, 0);
+        ctx.lineTo(canvas.width, 0);
+        ctx.lineTo(0.75 * canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.closePath();
+        ctx.fill();
+      } else if (shape === "trapezium") {
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0.75 * canvas.width, 0);
+        ctx.lineTo(0.25 * canvas.width, 0);
+        ctx.closePath();
+        ctx.fill();
+      } else if (shape === "rectangle" || shape === "square") {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (shape === "ellipse") {
+        ctx.beginPath();
+        ctx.ellipse(canvas.width / 2, canvas.height / 2, canvas.width / 2, canvas.height / 2, 0, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+      ctx.restore(); // Restore the saved transformation
+    }
+
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#FFFFFF';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // Add an event listener to the button
+    document.getElementById("convertButton").addEventListener("click", function () {
+      for (const shape of shapes) {
+        const canvas = document.getElementById(shape);
+        const dataUrl = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl;
+        downloadLink.download = `${shape}_angle_${document.getElementById("rotationAngle").value}_mirrored.png`;
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      }
+    });
+  </script>
+</body>
+</html>
