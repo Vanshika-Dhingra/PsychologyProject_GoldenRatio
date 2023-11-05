@@ -22,22 +22,22 @@
 
   <button id="convertButton">Convert to Images</button>
   <div class="canvas-container">
-    <canvas id="circle" width="200" height="200"></canvas>
+    <canvas id="circle" width="600" height="600"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="parallelogram" width="200" height="200"></canvas>
+    <canvas id="parallelogram" width="600" height="600"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="trapezium" width="200" height="200"></canvas>
+    <canvas id="trapezium" width="600" height="600"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="rectangle" width="300" height="200"></canvas>
+    <canvas id="rectangle" width="600" height="900"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="square" width="200" height="200"></canvas>
+    <canvas id="square" width="600" height="600"></canvas>
   </div>
   <div class="canvas-container">
-    <canvas id="ellipse" width="300" height="200"></canvas>
+    <canvas id="ellipse" width="600" height="900"></canvas>
   </div>
 
   <script>
@@ -110,7 +110,7 @@
         const dataUrl = canvas.toDataURL("image/png");
         const downloadLink = document.createElement("a");
         downloadLink.href = dataUrl;
-        downloadLink.download = `${shape}_angle_${document.getElementById("rotationAngle").value}_mirrored.png`;
+        downloadLink.download = `${shape}_angle_${document.getElementById("rotationAngle").value}_3x.png`;
         downloadLink.style.display = "none";
         document.body.appendChild(downloadLink);
         downloadLink.click();
