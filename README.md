@@ -11,8 +11,10 @@ their most preferred choice by aestheticity.
 ## Experiment 2
 * Participant is provided with shapes of 2 sizes, (big and small) depending on group. They must draw a line segregating
 shape into two parts, in the most aesthetic way.
-* Dataset is in `Experiment2` folder. `Experiment2/Data` contains responses of participants which we analyze.
+* Dataset is in `Experiment2` folder. `Experiment2/Data` contains responses of participants which we analyze, `Experiment2/files` also contains
+analysis.
 
+* `Person` folder is what each participant receives as stymulus.
 * All analysis and image processing pipeline is in `analysis` folder.
 * Pre-experiment link: https://forms.gle/BQtiy2JvNHNRxPwf8
 * Post-Experiment form: https://forms.gle/q5gwSc8Xdp6GC7CAA
